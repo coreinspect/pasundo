@@ -27,6 +27,7 @@ const Header = () => {
       <div className="header-overlay"></div>
       <div className=" header-content">
         <div className="container header-top">
+          {/* Logo Container */}
           <div className="header-top__logo">
             <Image
               src="/images/logo.png"
@@ -36,6 +37,8 @@ const Header = () => {
               className="logo"
             />
           </div>
+
+          {/* Header Info  */}
           <div className="header-top__info">
             <p className="drive-us">
               <span>
@@ -49,6 +52,8 @@ const Header = () => {
               </span>
               Get a ride in minutes
             </p>
+
+            {/* Hamburger Button */}
             <button
               className={`menu-toggle ${isMenuOpen ? "open" : ""}`}
               onClick={toggleMenu}
@@ -60,6 +65,8 @@ const Header = () => {
             </button>
           </div>
         </div>
+
+        {/* Nav */}
         <nav className={`container nav ${isMenuOpen ? "open" : ""}`}>
           <ul className="nav-list">
             <li className="nav-item">
@@ -76,6 +83,7 @@ const Header = () => {
             </li>
           </ul>
 
+          {/* Responsive Header Info*/}
           <div className="header-top__responsive">
             <p className="drive">
               <span>
