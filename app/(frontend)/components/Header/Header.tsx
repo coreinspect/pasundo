@@ -75,6 +75,7 @@ const Header = () => {
               <Link href="/">Contact </Link>
             </li>
           </ul>
+
           <div className="header-top__responsive">
             <p className="drive">
               <span>
@@ -90,6 +91,77 @@ const Header = () => {
             </p>
           </div>
         </nav>
+      </div>
+      {/* Text Content */}
+      <div className="container header-items">
+        <div className="header-item">
+          {/* Left Content */}
+          <div className="left-content">
+            <h1>Apply. Earn.</h1>
+            <p>
+              Apply now with Pasundo and start earning! Join our team of riders,
+              gain experience, and boost your income. Don’t miss the chance to
+              be part of a growing community.
+              <span>Start your journey with Pasundo today!</span>
+            </p>
+            <div className="cta-container">
+              <div className="cta-image">
+                <Link href="/">
+                  <Image
+                    src="/images/appleappstore.png"
+                    alt="Download on App Store"
+                    width={180}
+                    height={60}
+                  />
+                </Link>
+              </div>
+              <div className="cta-image">
+                <Link href="/">
+                  <Image
+                    src="/images/googleappstore.png"
+                    alt="Get it on Google Play"
+                    width={180}
+                    height={60}
+                  />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Content */}
+          <div className="right-content">
+            <h2>Have something in mind?</h2>
+            <form className="contact-form">
+              <div className="form-header">
+                <p>
+                  Have questions or ideas? Our team at Pasundo is here to help
+                  and guide you through the next steps. Reach out now and
+                  let&apos;s get started!
+                </p>
+              </div>
+              <div className="name-row">
+                <div className="form-group">
+                  <input type="text" placeholder="First Name" required />
+                </div>
+                <div className="form-group">
+                  <input type="text" placeholder="Last Name" required />
+                </div>
+              </div>
+              <div className="form-group">
+                <input type="email" placeholder="Email Address" required />
+              </div>
+              <div className="form-group">
+                <input type="tel" placeholder="Phone Number" required />
+              </div>
+              <div className="form-group">
+                <input type="text" placeholder="Current Location" required />
+              </div>
+              <button type="submit" className="submit-btn">
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </header>
   );
