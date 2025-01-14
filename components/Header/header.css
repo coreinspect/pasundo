@@ -217,6 +217,7 @@
 
 .form-group {
   margin-bottom: 1rem;
+  position: relative;
 }
 
 .form-group input {
@@ -225,12 +226,37 @@
   border: 1px solid #e1e1e1;
   border-radius: 6px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  background: transparent;
 }
 
-.form-group input:focus {
-  outline: none;
+.form-group label {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  font-size: 1rem;
+  color: #666;
+  pointer-events: none;
+  transition: 0.3s ease all;
+}
+
+.form-group input:focus,
+.form-group input:not(:placeholder-shown) {
   border-color: #007bff;
+  outline: none;
+  padding-top: 1.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  transform: translateY(-0.6rem);
+  font-size: 0.8rem;
+  color: #007bff;
+}
+
+.form-group input::placeholder {
+  color: transparent;
 }
 
 .submit-btn {

@@ -149,20 +149,25 @@ const Header = () => {
               </div>
               <div className="name-row">
                 <div className="form-group">
-                  <input type="text" placeholder="First Name" required />
+                  <input type="text" placeholder=" " required />
+                  <label>First Name</label>
                 </div>
                 <div className="form-group">
-                  <input type="text" placeholder="Last Name" required />
+                  <input type="text" placeholder=" " required />
+                  <label>Last Name</label>
                 </div>
               </div>
               <div className="form-group">
-                <input type="email" placeholder="Email Address" required />
+                <input type="email" placeholder=" " required />
+                <label>Email Address</label>
               </div>
               <div className="form-group">
-                <input type="tel" placeholder="Phone Number" required />
+                <input type="tel" placeholder=" " required />
+                <label>Phone Number</label>
               </div>
               <div className="form-group">
-                <input type="text" placeholder="Current Location" required />
+                <input type="text" placeholder=" " required />
+                <label>Current Location</label>
               </div>
               <button type="submit" className="submit-btn">
                 Send Message
