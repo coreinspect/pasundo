@@ -1,0 +1,115 @@
+.howItWorks {
+  padding: 5rem 0;
+  background: #f8f9fa;
+}
+
+.howitworks-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+.leftContent {
+  flex: 1;
+}
+
+.leftContent h2 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 1rem;
+  color: #333;
+  font-family: var(--font-rajdhani);
+  font-weight: 600;
+}
+
+.leftContent p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.buttonsWorks {
+  display: flex;
+  gap: 1rem;
+}
+
+.btnWorks {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fff;
+  border: 2px solid var(--blue);
+  color: var(--blue);
+}
+
+.btnWorks.active {
+  background: var(--blue);
+  color: #fff;
+}
+
+.rightContent {
+  width: 100%;
+  flex: 1;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rightContent h3 {
+  font-size: clamp(1.2rem, 5vw, 2rem);
+  text-align: center;
+  font-family: var(--font-rajdhani);
+  font-weight: 500;
+}
+
+.steps {
+  margin-top: 2rem;
+}
+
+.step {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.stepNumber {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .howitworks-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .buttonsWorks {
+    justify-content: center;
+  }
+
+  .rightContent {
+    padding: 1rem;
+  }
+
+  .step {
+    align-items: flex-start;
+  }
+
+  .stepNumber {
+    margin-bottom: 0.5rem;
+  }
+}
