@@ -99,7 +99,7 @@ const About = () => {
                   y: [0, -20, 0],
                 }}
                 transition={{
-                  delay: 1.6,
+                  delay: 1.2,
                   duration: 2,
                   y: {
                     duration: 2,

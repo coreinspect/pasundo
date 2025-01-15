@@ -5,10 +5,21 @@ import "./header.css";
 import { GiSteeringWheel } from "react-icons/gi";
 import { BsPhoneFlip } from "react-icons/bs";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -67,13 +78,17 @@ const Header = () => {
         </div>
 
         {/* Nav */}
-        <nav className={`container nav ${isMenuOpen ? "open" : ""}`}>
+        <nav
+          className={`container nav ${isMenuOpen ? "open" : ""} ${
+            isScrolled ? "fixed-nav" : ""
+          }`}
+        >
           <ul className="nav-list">
             <li className="nav-item">
               <Link href="/">Home </Link>
             </li>
             <li className="nav-item">
-              <Link href="/">About </Link>
+              <Link href="/#whypasundo">About </Link>
             </li>
             <li className="nav-item">
               <Link href="/">Services </Link>
