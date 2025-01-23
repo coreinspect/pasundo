@@ -1,0 +1,140 @@
+.privacy-container {
+  width: 100%;
+}
+
+.privacy-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.privacy-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.effective-date {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.privacy-intro {
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  color: #444;
+}
+
+.privacy-section {
+  background: #fff;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.privacy-section h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+.privacy-section h3 {
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  margin: 1.5rem 0 1rem;
+  color: #333;
+}
+
+.privacy-section p,
+.privacy-section li {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.privacy-section ul {
+  padding-left: 2rem;
+  margin-bottom: 1.5rem;
+  list-style: none;
+}
+
+.privacy-section li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.privacy-section li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 6px;
+  height: 6px;
+  background-color: #0066cc;
+  border-radius: 50%;
+}
+
+.privacy-section li:hover::before {
+  background-color: #004999;
+  transform: scale(1.2);
+  transition: all 0.2s ease;
+}
+
+/* Animations */
+.animate-fade-in {
+  animation: fadeIn 1s ease-in;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.privacy-sections .privacy-section {
+  animation-delay: calc(var(--index, 0) * 0.1s);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Agreement text */
+.agreement-text {
+  font-weight: 500;
+  text-align: center;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  color: #333;
+}
+
+.privacy-section a {
+  color: #0066cc;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.privacy-section a:hover {
+  color: #004999;
+  text-decoration: underline;
+}

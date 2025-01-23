@@ -2,27 +2,54 @@
 
 import Image from "next/image";
 import "./header.css";
-import { GiSteeringWheel } from "react-icons/gi";
-import { BsPhoneFlip } from "react-icons/bs";
+
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
+import emailjs from "@emailjs/browser";
+import Nav from "../Nav/Nav";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const form = useRef<HTMLFormElement>(null);
+  const [formStatus, setFormStatus] = useState({
+    loading: false,
+    success: false,
+    error: false,
+  });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsScrolled(scrollPosition > 100);
-    };
+  interface EmailEvent extends React.FormEvent<HTMLFormElement> {
+    target: HTMLFormElement;
+  }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const sendEmail = (e: EmailEvent): void => {
+    e.preventDefault();
+    setFormStatus({ loading: true, success: false, error: false });
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    if (form.current) {
+      emailjs
+        .sendForm(
+          "service_yhqsmze", // Replace with your Service ID
+          "template_4c6zdf6", // Replace with your Template ID
+          form.current,
+          "CqOt_i2a7x9ig0tV6" // Replace with your Public Key
+        )
+        .then(() => {
+          setFormStatus({ loading: false, success: true, error: false });
+          e.target.reset();
+          setTimeout(
+            () =>
+              setFormStatus({ loading: false, success: false, error: false }),
+            3000
+          );
+        })
+        .catch(() => {
+          setFormStatus({ loading: false, success: false, error: true });
+          setTimeout(
+            () =>
+              setFormStatus({ loading: false, success: false, error: false }),
+            3000
+          );
+        });
+    }
   };
 
   return (
@@ -36,85 +63,8 @@ const Header = () => {
         playsInline
       />
       <div className="header-overlay"></div>
-      <div className=" header-content">
-        <div className="container header-top">
-          {/* Logo Container */}
-          <div className="header-top__logo">
-            <Image
-              src="/images/logo.png"
-              alt="logo"
-              width={100}
-              height={100}
-              className="logo"
-            />
-          </div>
+      <Nav />
 
-          {/* Header Info  */}
-          <div className="header-top__info">
-            <p className="drive-us">
-              <span>
-                <GiSteeringWheel className="icon" />
-              </span>
-              Drive with us
-            </p>
-            <p className="get-ride">
-              <span>
-                <BsPhoneFlip className="icon" />
-              </span>
-              Get a ride in minutes
-            </p>
-
-            {/* Hamburger Button */}
-            <button
-              className={`menu-toggle ${isMenuOpen ? "open" : ""}`}
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
-            >
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-          </div>
-        </div>
-
-        {/* Nav */}
-        <nav
-          className={`container nav ${isMenuOpen ? "open" : ""} ${
-            isScrolled ? "fixed-nav" : ""
-          }`}
-        >
-          <ul className="nav-list">
-            <li className="nav-item">
-              <Link href="/">Home </Link>
-            </li>
-            <li className="nav-item">
-              <Link href="/#whypasundo">About </Link>
-            </li>
-            <li className="nav-item">
-              <Link href="/">Services </Link>
-            </li>
-            <li className="nav-item">
-              <Link href="/">Contact </Link>
-            </li>
-          </ul>
-
-          {/* Responsive Header Info*/}
-          <div className="header-top__responsive">
-            <p className="drive">
-              <span>
-                <GiSteeringWheel className="icon" />
-              </span>
-              Drive with us
-            </p>
-            <p className="get-rides">
-              <span>
-                <BsPhoneFlip className="icon" />
-              </span>
-              Get a ride in minutes
-            </p>
-          </div>
-        </nav>
-      </div>
       {/* Text Content */}
       <div className="container header-items">
         <div className="header-item">
@@ -154,7 +104,7 @@ const Header = () => {
           {/* Right Content */}
           <div className="right-content">
             <h2>Have something in mind?</h2>
-            <form className="contact-form">
+            <form ref={form} onSubmit={sendEmail} className="contact-form">
               <div className="form-header">
                 <p>
                   Have questions or ideas? Our team at Pasundo is here to help
@@ -164,29 +114,62 @@ const Header = () => {
               </div>
               <div className="name-row">
                 <div className="form-group">
-                  <input type="text" placeholder=" " required />
+                  <input
+                    type="text"
+                    name="first_name"
+                    placeholder=" "
+                    required
+                  />
                   <label>First Name</label>
                 </div>
                 <div className="form-group">
-                  <input type="text" placeholder=" " required />
+                  <input
+                    type="text"
+                    name="last_name"
+                    placeholder=" "
+                    required
+                  />
                   <label>Last Name</label>
                 </div>
               </div>
               <div className="form-group">
-                <input type="email" placeholder=" " required />
+                <input type="email" name="email" placeholder=" " required />
                 <label>Email Address</label>
               </div>
               <div className="form-group">
-                <input type="tel" placeholder=" " required />
+                <input type="tel" name="phone" placeholder=" " required />
                 <label>Phone Number</label>
               </div>
               <div className="form-group">
-                <input type="text" placeholder=" " required />
+                <input type="text" name="location" placeholder=" " required />
                 <label>Current Location</label>
               </div>
-              <button type="submit" className="submit-btn">
-                Send Message
+              <div className="form-group">
+                <textarea
+                  name="message"
+                  placeholder=" "
+                  required
+                  rows={4}
+                ></textarea>
+                <label>Message</label>
+              </div>
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={formStatus.loading}
+              >
+                {formStatus.loading ? "Sending..." : "Send Message"}
               </button>
+              {formStatus.success && (
+                <div className="form-status success">
+                  Message sent successfully!
+                </div>
+              )}
+              {formStatus.error && (
+                <div className="form-status error">
+                  Failed to send message. Please try again.
+                </div>
+              )}
             </form>
           </div>
         </div>

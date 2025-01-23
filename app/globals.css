@@ -100,3 +100,82 @@ h6 {
     max-width: 1536px;
   }
 }
+
+/* Not Found Page Styles */
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  padding: 0 1.5rem;
+}
+
+.not-found-content {
+  text-align: center;
+}
+
+.not-found-title {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 1rem;
+}
+
+.not-found-subtitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 1.5rem;
+}
+
+.not-found-text {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.not-found-button {
+  display: inline-block;
+  background-color: var(--blue);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.not-found-button:hover {
+  opacity: 0.9;
+}
+
+.not-found-search {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+}
+
+.not-found-path {
+  font-weight: 600;
+  text-transform: capitalize;
+  color: var(--red);
+  word-break: break-all;
+}
+
+/* Responsive styles for not-found page */
+@media (min-width: 768px) {
+  .not-found-title {
+    font-size: 6rem;
+  }
+
+  .not-found-subtitle {
+    font-size: 2rem;
+  }
+
+  .not-found-text {
+    font-size: 1.125rem;
+  }
+
+  .not-found-search {
+    font-size: 1rem;
+  }
+}

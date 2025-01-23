@@ -5,7 +5,7 @@ import "./about.css";
 
 const About = () => {
   return (
-    <section className="about-container">
+    <section className="about-container" id="about">
       <div className="container">
         <div className="about-content">
           <motion.div
@@ -92,7 +92,7 @@ const About = () => {
               <motion.img
                 src="/images/PASUNDO.png"
                 alt="Pasundo App"
-                initial={{ x: 50, opacity: 0 }}
+                initial={{ x: 30, opacity: 0 }}
                 whileInView={{
                   x: 0,
                   opacity: 1,
@@ -108,7 +108,7 @@ const About = () => {
                   },
                 }}
                 animate={{
-                  y: [0, -20, 0],
+                  y: [0, 20, 0],
                 }}
               />
             </motion.div>
