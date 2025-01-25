@@ -1,9 +1,25 @@
 "use client";
-import Link from "next/link";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaGooglePlay, FaApple } from "react-icons/fa";
 import "./about.css";
 
+const downloadOptions = [
+  {
+    platform: "Google Play Store",
+    url: "#",
+    icon: <FaGooglePlay className="download-icon" />,
+  },
+  {
+    platform: "Apple App Store",
+    url: "#",
+    icon: <FaApple className="download-icon" />,
+  },
+];
+
 const About = () => {
+  const [showDownloadOptions, setShowDownloadOptions] = useState(false);
+
   return (
     <section className="about-container" id="about">
       <div className="container">
@@ -50,15 +66,37 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.5 }}
             >
-              <Link href="/about">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="download-btn"
-                >
-                  <span>DOWNLOAD THE APP NOW</span>
-                </motion.button>
-              </Link>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="download-btn"
+                onClick={() => setShowDownloadOptions(!showDownloadOptions)}
+              >
+                <span>DOWNLOAD THE APP NOW</span>
+              </motion.button>
+              <AnimatePresence>
+                {showDownloadOptions && (
+                  <motion.div
+                    className="download-options"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                  >
+                    {downloadOptions.map((option) => (
+                      <a
+                        key={option.platform}
+                        href={option.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="download-option"
+                      >
+                        {option.icon}
+                        {option.platform}
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           </motion.div>
           <motion.div

@@ -4,6 +4,7 @@ import Image from "next/image";
 import "./contact.css";
 import Nav from "@/components/Nav/Nav";
 import { Footer } from "@/components/Footer/Footer";
+import ContactForm from "@/components/ContactForm/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact Us | Pasundo",
@@ -77,71 +78,10 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Right Side - Form */}
-          <form className="contact-form-page">
-            <div className="contact-group">
-              <select id="issueType" name="issueType" required defaultValue="">
-                <option value="" disabled>
-                  Select an issue type
-                </option>
-                <option value="app">Report an issue with Pasundo app</option>
-                <option value="driver">
-                  Report an issue with Pasundo Driver
-                </option>
-                <option value="passenger">
-                  Report an issue with Pasundo passenger
-                </option>
-              </select>
-              <label htmlFor="issueType">Issue Type</label>
-            </div>
-
-            <div className="contact-group">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder=" "
-                required
-              />
-              <label htmlFor="name">Full Name</label>
-            </div>
-
-            <div className="contact-group">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder=" "
-                required
-              />
-              <label htmlFor="email">Email Address</label>
-            </div>
-
-            <div className="contact-group">
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                placeholder=" "
-                required
-              />
-              <label htmlFor="phone">Phone Number</label>
-            </div>
-
-            <div className="contact-group">
-              <textarea
-                id="message"
-                name="message"
-                placeholder=" "
-                required
-              ></textarea>
-              <label htmlFor="message">Message</label>
-            </div>
-
-            <button type="submit" className="submit-button">
-              Send Message
-            </button>
-          </form>
+          {/* Updated Form */}
+          <div className="contact-form-page">
+            <ContactForm />
+          </div>
         </div>
       </div>
       <Footer />

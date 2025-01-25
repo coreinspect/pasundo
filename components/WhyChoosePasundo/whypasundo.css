@@ -77,3 +77,47 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.report-issues-container {
+  max-width: 1200px;
+  margin: 4rem auto 0;
+  padding: 2rem;
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.report-issues-container h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #333;
+  font-family: var(--font-rajdhani);
+}
+
+.report-issues-container p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.report-button {
+  padding: 1rem 2rem;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.report-button:hover {
+  background: #d32f2f;
+}
+
+@media (max-width: 768px) {
+  .report-issues-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+  }
+}

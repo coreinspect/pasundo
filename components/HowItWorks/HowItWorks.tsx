@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import "./howitworks.css"; // Changed import from module to regular CSS
-import Link from "next/link";
 
 type Tab = "driver" | "passenger";
 
@@ -123,16 +122,6 @@ const HowItWorks = () => {
             </motion.div>
           </AnimatePresence>
         </div>
-      </div>
-      <div className="report-issues-container">
-        <h3>Report Issues</h3>
-        <p>
-          Having trouble with the Pasundo App, Driver and Passenger? Let us know
-          and we&apos;ll help you right away.
-        </p>
-        <button className="report-button">
-          <Link href="/contact">Report a Problem</Link>
-        </button>
       </div>
     </section>
   );

@@ -8,8 +8,8 @@ export default function Home() {
   return (
     <section>
       <Header />
-      <HowItWorks />
       <About />
+      <HowItWorks />
       <WhyPasundo />
       <Footer />
     </section>

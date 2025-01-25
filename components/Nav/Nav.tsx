@@ -30,8 +30,8 @@ const Nav = () => {
           <Image
             src="/images/logo.png"
             alt="logo"
-            width={100}
-            height={100}
+            width={300}
+            height={300}
             className="logo"
           />
         </div>

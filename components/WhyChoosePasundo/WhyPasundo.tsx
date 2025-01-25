@@ -3,6 +3,7 @@ import "./whypasundo.css";
 import { FaUserCircle, FaMotorcycle } from "react-icons/fa";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { FaHelmetSafety } from "react-icons/fa6";
+import Link from "next/link";
 
 const WhyPasundo = () => {
   return (
@@ -43,6 +44,16 @@ const WhyPasundo = () => {
             we’ve got you covered.
           </p>
         </div>
+      </div>
+      <div className="report-issues-container">
+        <h3>Report Issues</h3>
+        <p>
+          Having trouble with the Pasundo App, Driver and Passenger? Let us know
+          and we&apos;ll help you right away.
+        </p>
+        <button className="report-button">
+          <Link href="/contact">Report a Problem</Link>
+        </button>
       </div>
     </section>
   );
