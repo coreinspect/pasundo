@@ -78,16 +78,19 @@ const Header = () => {
               <span>Start your journey with Pasundo today!</span>
             </p>
             <div className="cta-container">
-              <div className="cta-image">
+              <div className="cta-image coming-soon-wrapper">
                 <Link href="/">
+                  <div className="coming-soon-overlay">Coming Soon</div>
                   <Image
                     src="/images/appleappstore.png"
                     alt="Download on App Store"
                     width={180}
                     height={60}
+                    className="disabled-image"
                   />
                 </Link>
               </div>
+              {/* Keep Google Play store as is */}
               <div className="cta-image">
                 <Link href="/">
                   <Image

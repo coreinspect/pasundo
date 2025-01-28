@@ -9,11 +9,14 @@ const downloadOptions = [
     platform: "Google Play Store",
     url: "#",
     icon: <FaGooglePlay className="download-icon" />,
+    disabled: false,
   },
   {
     platform: "Apple App Store",
     url: "#",
     icon: <FaApple className="download-icon" />,
+    disabled: true,
+    title: "Coming soon to App Store",
   },
 ];
 
@@ -85,10 +88,13 @@ const About = () => {
                     {downloadOptions.map((option) => (
                       <a
                         key={option.platform}
-                        href={option.url}
+                        href={option.disabled ? undefined : option.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="download-option"
+                        className={`download-option ${
+                          option.disabled ? "disabled" : ""
+                        }`}
+                        onClick={(e) => option.disabled && e.preventDefault()}
                       >
                         {option.icon}
                         {option.platform}

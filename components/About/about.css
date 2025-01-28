@@ -90,11 +90,11 @@
 .download-option {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 0.75rem 1rem;
   text-decoration: none;
   color: var(--dark);
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   border-radius: 8px;
 }
 
@@ -102,8 +102,31 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+.download-option:hover .download-icon {
+  transform: scale(1.1);
+}
+
 .download-option span {
   font-size: 1.2rem;
+}
+
+.download-icon {
+  font-size: 1.5rem;
+  color: var(--dark);
+}
+
+.download-option.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.download-option.disabled:hover {
+  background-color: transparent;
+}
+
+.download-option.disabled .download-icon {
+  transform: none;
 }
 
 .about-right {

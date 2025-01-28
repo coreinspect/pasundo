@@ -39,7 +39,11 @@ export const Footer = () => {
         <div className="footer-section">
           <h3>Download App</h3>
           <div className="download-buttons">
-            <button className="download-btn-footer">
+            <button
+              className="download-btn-footer disabled"
+              disabled
+              title="Coming soon to App Store"
+            >
               <FaApple className="btn-icon" /> App Store
             </button>
             <button className="download-btn-footer">

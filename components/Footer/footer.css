@@ -121,6 +121,16 @@
   font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
+.download-btn-footer.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #2a2a2a;
+}
+
+.download-btn-footer.disabled:hover {
+  background-color: #2a2a2a;
+}
+
 .btn-icon {
   /* Min: 16px, Preferred: 2.5vw, Max: 20px */
   font-size: clamp(1rem, 2.5vw, 1.25rem);
