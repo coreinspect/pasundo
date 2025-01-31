@@ -1,20 +1,11 @@
-"use client";
 import Image from "next/image";
+import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import "./loginform.css";
+import { auth, signIn } from "@/auth";
 
-export default function LoginForm() {
-  const handleGoogleLogin = () => {
-    // Implement Google OAuth login
-    console.log("Google login clicked");
-  };
-
-  const handleGithubLogin = () => {
-    // Implement GitHub OAuth login
-    console.log("GitHub login clicked");
-  };
-
+const LoginForm = async () => {
+  const session = await auth();
   return (
     <div className="login-wrapper">
       <div className="login-container">
@@ -26,23 +17,30 @@ export default function LoginForm() {
           className="logo"
         />
         <h1 className="login-title">Welcome Back</h1>
-
-        <button
-          className="social-button google-button"
-          onClick={handleGoogleLogin}
-        >
-          <FcGoogle size={24} />
-          Login with Google
-        </button>
-
-        <button
-          className="social-button github-button"
-          onClick={handleGithubLogin}
-        >
-          <FaGithub size={24} />
-          Login with GitHub
-        </button>
+        {!session ? (
+          <form
+            className="social-button google-button"
+            action={async () => {
+              "use server";
+              await signIn("google", { redirectTo: "/dashboard" });
+            }}
+          >
+            <FcGoogle size={24} />
+            <button type="submit">Login with Google</button>
+          </form>
+        ) : (
+          <div className="logged-in-content">
+            <p>
+              You are already logged in as <span>{session.user?.email}</span>
+            </p>
+            <Link href="/dashboard" className="dashboard-button">
+              Go to Dashboard
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
-}
+};
+
+export default LoginForm;
