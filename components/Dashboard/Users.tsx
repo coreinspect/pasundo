@@ -68,7 +68,9 @@ const Users = () => {
         subtitle="Manage your system users here"
         status={{
           isConnected: isConnected,
-          label: isConnected ? "API Status: Online" : "API Status: Offline",
+          label: isConnected
+            ? "API Status: Connected"
+            : "API Status: Disconnected",
         }}
       />
 

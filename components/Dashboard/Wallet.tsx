@@ -1,219 +1,123 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { SearchResults, WalletData, Transaction } from "./types/wallet";
+import { useWallet } from "./hooks/useWallet";
+import { WalletSearchResults } from "./Wallet/SearchResults";
 import PageHeader from "./shared/PageHeader";
+import { FaSearch } from "react-icons/fa";
 import "./shared/shared.css";
 import "./Wallet/Wallet.css";
-import {
-  FaWallet,
-  FaSearch,
-  FaUser,
-  FaPhone,
-  FaUserTag,
-  FaMoneyBillWave,
-  FaIdCard,
-} from "react-icons/fa";
-
-interface UserData {
-  id: string;
-  first_name: string;
-  last_name: string;
-  phone_number: string;
-  role: string;
-}
-
-interface WalletData {
-  user_id: string;
-  amount: number;
-  phone_number: string;
-}
-
-interface SearchResults {
-  wallet: WalletData;
-  user: UserData;
-}
+import { ModifyWalletModal } from "./Wallet/ModifyWalletModal";
+import { useTransactions } from "./hooks/useTransactions";
+import { TransactionModal } from "./Wallet/TransactionModal";
 
 const Wallet = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneError, setPhoneError] = useState(""); // Add this line
   const [searchResults, setSearchResults] = useState<SearchResults | null>(
     null
   );
-  const [isApiConnected, setIsApiConnected] = useState(false);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [showModifyModal, setShowModifyModal] = useState(false);
+  const [isApiConnected, setIsApiConnected] = useState(true); // Add API connection state
+  const { isLoading, error, searchWallet, modifyWalletBalance } = useWallet();
+  const [selectedWallet, setSelectedWallet] = useState<WalletData | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { fetchTransactions } = useTransactions();
+  const [showTransactionModal, setShowTransactionModal] = useState(false);
 
   useEffect(() => {
-    checkApiConnection();
+    setIsApiConnected(!error);
+  }, [error]);
+
+  const handleSearch = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+
+      // Reset both errors at the start
+      setPhoneError("");
+
+      // Validation checks for phone number format
+      if (!phoneNumber) {
+        setPhoneError("Phone number is required");
+        return;
+      }
+
+      if (phoneNumber.length !== 11) {
+        setPhoneError("Phone number must be 11 digits");
+        return;
+      }
+
+      if (!/^\d+$/.test(phoneNumber)) {
+        setPhoneError("Phone number must contain only digits");
+        return;
+      }
+
+      // If we reach here, phone number format is valid, proceed with search
+      try {
+        const results = await searchWallet(phoneNumber);
+        if (results) {
+          setSearchResults(results);
+          console.log("Wallet found, fetching transactions...");
+
+          const transactionHistory = await fetchTransactions(phoneNumber);
+          console.log("Transaction history received:", transactionHistory);
+
+          setTransactions(transactionHistory || []);
+        }
+      } catch (error) {
+        console.error("Search error:", error);
+        setTransactions([]);
+      }
+    },
+    [phoneNumber, searchWallet, fetchTransactions]
+  );
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= 11 && /^\d*$/.test(value)) {
+      setPhoneNumber(value);
+      setPhoneError("");
+    }
+  };
+
+  const handleModifyWallet = useCallback((wallet: WalletData) => {
+    setSelectedWallet(wallet);
+    setShowModifyModal(true);
   }, []);
 
-  const checkApiConnection = async () => {
-    try {
-      const response = await fetch("https://aws.pasundo.com/api/wallet/");
-      setIsApiConnected(response.ok);
-    } catch (error) {
-      setIsApiConnected(false);
-      console.error("API connection error:", error);
-    }
-  };
-
-  const formatPhoneNumber = (phone: string | undefined | null): string => {
-    if (!phone) return "";
+  const handleModifyAction = async (
+    phoneNumber: string,
+    action: "add" | "deduct",
+    amount: number
+  ) => {
+    if (!phoneNumber || !action || !amount) return;
 
     try {
-      // Remove any non-digit characters
-      const cleaned = phone.toString().replace(/\D/g, "");
+      const result = await modifyWalletBalance(phoneNumber, action, amount);
 
-      // For numbers starting with '09', keep as is
-      if (cleaned.startsWith("09") && cleaned.length === 11) {
-        return cleaned;
+      if (result) {
+        if (searchResults && searchResults.wallet) {
+          setSearchResults({
+            ...searchResults,
+            wallet: {
+              ...searchResults.wallet,
+              amount: result.new_balance,
+            },
+          });
+        }
+        setShowModifyModal(false);
       }
-      return cleaned;
     } catch (error) {
-      console.error("Error formatting phone number:", error);
-      return "";
-    }
-  };
-
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setSearchResults(null);
-    setIsLoading(true);
-
-    if (!phoneNumber || phoneNumber.length < 11) {
-      setError("Please enter a valid 11-digit phone number");
-      setIsLoading(false);
-      return;
-    }
-
-    const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
-
-    try {
-      // First fetch user information by phone number
-      const usersResponse = await fetch(`https://aws.pasundo.com/api/users/`);
-
-      if (!usersResponse.ok) {
-        throw new Error(`Users API error: ${usersResponse.statusText}`);
-      }
-
-      const usersData = await usersResponse.json();
-
-      if (!usersData || !Array.isArray(usersData)) {
-        throw new Error("Error fetching user data");
-      }
-
-      // Find user with matching phone number
-      const matchingUser = usersData.find((user: UserData) => {
-        const userPhone = formatPhoneNumber(user.phone_number);
-        return userPhone === formattedPhoneNumber;
-      });
-
-      if (!matchingUser) {
-        throw new Error("No user found with this phone number");
-      }
-
-      // Then fetch wallet information using user ID
-      const walletResponse = await fetch(`https://aws.pasundo.com/api/wallet/`);
-      const walletData = await walletResponse.json();
-
-      if (!walletData || !Array.isArray(walletData)) {
-        throw new Error("Error fetching wallet data");
-      }
-
-      // Find wallet with matching user_id
-      const matchingWallet = walletData.find(
-        (wallet: WalletData) => wallet.user_id === matchingUser.id
-      );
-
-      if (!matchingWallet) {
-        throw new Error("No wallet found for this user");
-      }
-
-      // Combine the matched data
-      const combinedData: SearchResults = {
-        wallet: matchingWallet,
-        user: matchingUser,
-      };
-
-      setSearchResults(combinedData);
-    } catch (error) {
-      console.error(
-        "Search failed:",
-        error instanceof Error ? error.message : "Unknown error"
-      );
+      // Handle error silently or show in UI
       setError(
-        error instanceof Error ? error.message : "An unknown error occurred"
+        error instanceof Error ? error.message : "Failed to modify wallet"
       );
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const renderSearchResults = () => {
-    if (isLoading) {
-      return <div className="loading">Searching...</div>;
-    }
-
-    if (!searchResults) return null;
-
-    return (
-      <div className="search-results">
-        <h3>
-          <FaSearch className="info-icon" />
-          Search Results
-        </h3>
-        <div className="user-wallet-info">
-          <div className="info-group">
-            <h4>
-              <FaUser className="info-icon" /> User Details
-            </h4>
-            {searchResults.user && (
-              <>
-                <p>
-                  <FaUser className="icon" />
-                  <strong>Name:</strong>
-                  <span>
-                    {searchResults.user.first_name || "N/A"}{" "}
-                    {searchResults.user.last_name || "N/A"}
-                  </span>
-                </p>
-                <p>
-                  <FaPhone className="icon" />
-                  <strong>Phone:</strong>
-                  <span>{searchResults.user.phone_number || "N/A"}</span>
-                </p>
-                <p>
-                  <FaUserTag className="icon" />
-                  <strong>Role:</strong>
-                  <span>{searchResults.user.role || "N/A"}</span>
-                </p>
-              </>
-            )}
-          </div>
-          <div className="info-group">
-            <h4>
-              <FaWallet className="info-icon" /> Wallet Details
-            </h4>
-            {searchResults.wallet && (
-              <>
-                <p>
-                  <FaMoneyBillWave className="icon" />
-                  <strong>Balance:</strong>
-                  <span className="balance-amount">
-                    ₱{searchResults.wallet.amount.toLocaleString() || 0}
-                  </span>
-                </p>
-                <p>
-                  <FaIdCard className="icon" />
-                  <strong>User ID:</strong>
-                  <span>{searchResults.wallet.user_id || "N/A"}</span>
-                </p>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  };
+  const handleViewTransactions = useCallback(() => {
+    setShowTransactionModal(true);
+  }, []);
 
   return (
     <div>
@@ -246,20 +150,55 @@ const Wallet = () => {
         <form onSubmit={handleSearch}>
           <input
             type="text"
-            placeholder="Enter phone number"
+            placeholder="Enter 11-digit phone number"
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={handlePhoneChange}
             className="search-input"
           />
           <button type="submit" className="search-btn">
             <FaSearch className="btn-icon" /> Search Wallet
           </button>
         </form>
-        {error && <p className="error-message">{error}</p>}
-        {searchResults && renderSearchResults()}
+        {/* Show phone format error if present, otherwise show search error */}
+        {phoneError ? (
+          <p className="error-message">{phoneError}</p>
+        ) : (
+          error && <p className="error-message">{error}</p>
+        )}
+        {isLoading && <div className="loading">Searching...</div>}
+        {searchResults && (
+          <>
+            <WalletSearchResults
+              results={searchResults}
+              onModify={() => handleModifyWallet(searchResults.wallet)}
+              onDelete={handleViewTransactions}
+            />
+            {showTransactionModal && (
+              <TransactionModal
+                isOpen={showTransactionModal}
+                onClose={() => setShowTransactionModal(false)}
+                transactions={transactions}
+              />
+            )}
+          </>
+        )}
       </div>
+      {showModifyModal && selectedWallet && (
+        <ModifyWalletModal
+          isOpen={showModifyModal}
+          onClose={() => setShowModifyModal(false)}
+          wallet={selectedWallet}
+          phoneNumber={searchResults?.user?.phone_number || ""}
+          onModify={handleModifyAction}
+        />
+      )}
     </div>
   );
 };
 
 export default Wallet;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function setError(arg0: string) {
+  throw new Error("Function not implemented.");
+}

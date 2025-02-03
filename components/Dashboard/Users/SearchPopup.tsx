@@ -64,7 +64,10 @@ const SearchPopup = ({ driver, onClose }: SearchPopupProps) => {
         <button className="close-button" onClick={onClose}>
           &times;
         </button>
-        <h3>Search Result</h3>
+        <h3 className="search-popup-header">
+          <span className="search-icon">🔍</span>
+          Search Result
+        </h3>
         <div className="search-result">
           <div className="item-header">
             <ItemIcon type="name" />

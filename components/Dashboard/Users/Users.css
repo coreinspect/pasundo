@@ -575,3 +575,53 @@
 .action-button:hover {
   opacity: 0.9;
 }
+
+/* Search Form Container and Error Styles */
+.search-form-container {
+  position: relative;
+}
+
+.search-error {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-top: 4px;
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 10;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Search Popup Header Styles */
+.search-popup-header {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: white;
+  font-size: 1.4rem;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  background: linear-gradient(to right, #1a237e, #3949ab);
+  margin: 0;
+}
+
+.search-icon {
+  font-size: 1.4rem;
+}

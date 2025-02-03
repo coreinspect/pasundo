@@ -94,10 +94,17 @@ const UsersTable = ({ drivers }: { drivers: Driver[] }) => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  const handleSearch = (phoneNumber: string) => {
+  const handleSearch = (
+    phoneNumber: string,
+    setNotFound: (value: boolean) => void
+  ) => {
     const result = drivers.find((driver) =>
       driver.phone_number.includes(phoneNumber)
     );
+    if (!result) {
+      setNotFound(true);
+      setTimeout(() => setNotFound(false), 3000);
+    }
     setSearchResult(result || null);
   };
 
