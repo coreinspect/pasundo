@@ -16,7 +16,7 @@ const Reports = () => {
         </div>
         <div className="stat-card">
           <h3>Total Revenue</h3>
-          <p>$45,670</p>
+          <p>45,670</p>
         </div>
         <div className="stat-card">
           <h3>Growth Rate</h3>
