@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Transaction } from "../types/wallet";
+import { Transaction } from "../../../types/wallet";
 import { FaMoneyBillWave, FaPlus, FaMinus } from "react-icons/fa";
 
 interface TransactionHistoryProps {

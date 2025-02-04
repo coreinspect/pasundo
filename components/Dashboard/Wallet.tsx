@@ -1,14 +1,14 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
-import { SearchResults, WalletData, Transaction } from "./types/wallet";
-import { useWallet } from "./hooks/useWallet";
+import { SearchResults, WalletData, Transaction } from "../../types/wallet";
+import { useWallet } from "../../hooks/useWallet";
 import { WalletSearchResults } from "./Wallet/SearchResults";
 import PageHeader from "./shared/PageHeader";
 import { FaSearch } from "react-icons/fa";
 import "./shared/shared.css";
 import "./Wallet/Wallet.css";
 import { ModifyWalletModal } from "./Wallet/ModifyWalletModal";
-import { useTransactions } from "./hooks/useTransactions";
+import { useTransactions } from "../../hooks/useTransactions";
 import { TransactionModal } from "./Wallet/TransactionModal";
 
 const Wallet = () => {

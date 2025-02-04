@@ -2,16 +2,10 @@ import { useState } from "react";
 import "./Users.css"; // Updated import
 import SearchForm from "./SearchForm";
 import SearchPopup from "./SearchPopup";
+import { User } from "../../../types/user";
 
-interface Driver {
-  id: string;
-  first_name: string;
-  last_name: string;
-  phone_number: string;
-  role: string;
-  status: string;
-  sms_otp_created: string;
-  is_registered: string; // Added this line
+interface UsersTableProps {
+  drivers: User[];
 }
 
 const UserAvatar = ({
@@ -46,9 +40,9 @@ const RoleBadge = ({ role }: { role: string }) => {
   );
 };
 
-const UsersTable = ({ drivers }: { drivers: Driver[] }) => {
+const UsersTable: React.FC<UsersTableProps> = ({ drivers }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchResult, setSearchResult] = useState<Driver | null>(null);
+  const [searchResult, setSearchResult] = useState<User | null>(null);
   const itemsPerPage = 10;
 
   const formatRelativeTime = (dateString: string) => {

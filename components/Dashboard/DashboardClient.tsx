@@ -17,7 +17,17 @@ const DashboardClient = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
 
-  // Remove debug console.log
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    // Prevent body scroll when menu is open
+    document.body.style.overflow = !isMobileMenuOpen ? "hidden" : "auto";
+  };
+
+  const handleNavClick = (section: string) => {
+    setActiveSection(section);
+    setIsMobileMenuOpen(false);
+    document.body.style.overflow = "auto";
+  };
 
   const isAuthorized = userEmail && allowedEmails.includes(userEmail);
 
@@ -88,6 +98,24 @@ const DashboardClient = () => {
 
   return (
     <div className="dashboard-layout">
+      <button
+        className="mobile-menu-toggle"
+        onClick={toggleMobileMenu}
+        aria-label="Toggle menu"
+      >
+        <FaBars />
+      </button>
+
+      {isMobileMenuOpen && (
+        <div
+          className="mobile-menu-overlay show"
+          onClick={() => {
+            setIsMobileMenuOpen(false);
+            document.body.style.overflow = "auto";
+          }}
+        />
+      )}
+
       <nav className={`dashboard-nav ${isMobileMenuOpen ? "mobile-open" : ""}`}>
         <div className="nav-header">
           <Image
@@ -98,10 +126,7 @@ const DashboardClient = () => {
             className="logo"
           />
           <h2>Admin Panel</h2>
-          <button
-            className="mobile-menu-toggle"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
+          <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
             <FaBars />
           </button>
         </div>
@@ -113,7 +138,7 @@ const DashboardClient = () => {
             }`}
           >
             <a
-              onClick={() => setActiveSection("overview")}
+              onClick={() => handleNavClick("overview")}
               style={{ cursor: "pointer" }}
             >
               <FaHome /> Overview
@@ -123,7 +148,7 @@ const DashboardClient = () => {
             className={`nav-item ${activeSection === "users" ? "active" : ""}`}
           >
             <a
-              onClick={() => setActiveSection("users")}
+              onClick={() => handleNavClick("users")}
               style={{ cursor: "pointer" }}
             >
               <FaUsers /> Users
@@ -133,7 +158,7 @@ const DashboardClient = () => {
             className={`nav-item ${activeSection === "wallet" ? "active" : ""}`}
           >
             <a
-              onClick={() => setActiveSection("wallet")}
+              onClick={() => handleNavClick("wallet")}
               style={{ cursor: "pointer" }}
             >
               <FaWallet /> Wallet
@@ -145,7 +170,7 @@ const DashboardClient = () => {
             }`}
           >
             <a
-              onClick={() => setActiveSection("reports")}
+              onClick={() => handleNavClick("reports")}
               style={{ cursor: "pointer" }}
             >
               <FaChartBar /> Reports

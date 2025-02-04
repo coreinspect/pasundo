@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { SearchResults } from "../types/wallet";
+import { SearchResults } from "../../../types/wallet";
 import {
   FaSearch,
   FaUser,
