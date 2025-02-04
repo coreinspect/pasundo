@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Transaction } from "../types/wallet";
+import { Transaction } from "../../../types/wallet";
 import {
   FaClock,
   FaPlus,

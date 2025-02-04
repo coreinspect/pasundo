@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { WalletData } from "../types/wallet";
+import { WalletData } from "../../../types/wallet";
 import { FaPlus, FaMinus, FaTimes } from "react-icons/fa";
 
 interface ModifyWalletModalProps {
