@@ -11,7 +11,7 @@ const Reports = () => {
 
       <div className="reports-stats">
         <div className="stat-card">
-          <h3>Monthly Reports</h3>
+          <h3>Monthly Report</h3>
           <p>24</p>
         </div>
         <div className="stat-card">
