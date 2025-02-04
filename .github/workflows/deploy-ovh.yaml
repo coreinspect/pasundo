@@ -56,6 +56,6 @@ jobs:
         run: |
           npm install
 
-      - name: Run app in detached mode
-        run: |
-          pm2 restart nextjs-app
+      # - name: Run app in detached mode
+      #   run: |
+      #     pm2 start npm --name "next-app" -- start
