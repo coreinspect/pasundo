@@ -1,24 +1,31 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
-const allowedEmails = process.env.NEXT_PUBLIC_ALLOWED_EMAILS?.split(",") || [];
+const allowedEmails =
+  process.env.NEXT_PUBLIC_ALLOWED_EMAILS?.split(",").map((email) =>
+    email.trim()
+  ) || [];
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [Google],
   pages: {
     signIn: "/auth/signin",
+    error: "/auth/error", // Add error page
   },
   callbacks: {
-    signIn({ profile }) {
-      if (!profile?.email) return false;
-      return allowedEmails.includes(profile.email);
+    async signIn({ profile }) {
+      try {
+        if (!profile?.email) return false;
+        return allowedEmails.includes(profile.email.toLowerCase());
+      } catch (error) {
+        console.error("Sign in error:", error);
+        return false;
+      }
     },
     async redirect({ url, baseUrl }) {
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Only allow redirects to trusted domains
       if (url.startsWith(baseUrl)) return url;
-      if (url.startsWith("http://localhost")) {
-        return process.env.NEXTAUTH_URL || "https://pasundo.com";
-      }
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
       return baseUrl;
     },
   },

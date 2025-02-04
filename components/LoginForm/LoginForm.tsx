@@ -17,7 +17,16 @@ const LoginForm = async () => {
           className="logo"
         />
         <h1 className="login-title">Welcome Back</h1>
-        {!session ? (
+        {session?.user ? (
+          <div className="logged-in-content">
+            <p>
+              You are already logged in as <span>{session.user.email}</span>
+            </p>
+            <Link href="/dashboard" className="dashboard-button">
+              Go to Dashboard
+            </Link>
+          </div>
+        ) : (
           <form
             className="social-button google-button"
             action={async () => {
@@ -28,15 +37,6 @@ const LoginForm = async () => {
             <FcGoogle size={24} />
             <button type="submit">Login with Google</button>
           </form>
-        ) : (
-          <div className="logged-in-content">
-            <p>
-              You are already logged in as <span>{session.user?.email}</span>
-            </p>
-            <Link href="/dashboard" className="dashboard-button">
-              Go to Dashboard
-            </Link>
-          </div>
         )}
       </div>
     </div>
