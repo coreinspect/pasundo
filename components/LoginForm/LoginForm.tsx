@@ -31,7 +31,12 @@ const LoginForm = async () => {
             className="social-button google-button"
             action={async () => {
               "use server";
-              await signIn("google", { redirectTo: "/dashboard" });
+              try {
+                await signIn("google", { redirectTo: "/dashboard" });
+              } catch (error) {
+                console.error("Login error:", error);
+                throw error; // Re-throw to show error UI
+              }
             }}
           >
             <FcGoogle size={24} />
