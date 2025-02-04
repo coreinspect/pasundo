@@ -18,7 +18,7 @@ jobs:
       - name: SSH into server and deploy application
         run: |
           sshpass -p '${{ secrets.SERVER_PASSWORD }}' ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{secrets.SERVER_IP}} << EOF
-          cd /root/dev/fastapi
+          cd /root/dev/nextjs
 
           # create ~/.git if it does not exists
           # mkdir -p ~/.git
