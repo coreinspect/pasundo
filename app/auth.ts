@@ -10,5 +10,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (!profile?.email) return false;
       return allowedEmails.includes(profile.email);
     },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Ensure the URL is redirecting to pasundo.com or www.pasundo.com
+      const origin = new URL(url).origin;
+      if (origin === "http://localhost:3000") return "https://pasundo.com";
+      if (origin === "http://localhost:3000") return "https://www.pasundo.com";
+      return url;
+    },
   },
 });
