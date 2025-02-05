@@ -19,7 +19,7 @@ const DashboardClient = () => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
-    // Prevent body scroll when menu is open
+    // Prevent body scroll
     document.body.style.overflow = !isMobileMenuOpen ? "hidden" : "auto";
   };
 
@@ -58,41 +58,46 @@ const DashboardClient = () => {
   }
 
   const renderContent = () => {
-    switch (activeSection) {
-      case "users":
-        return <Users />;
-      case "wallet":
-        return <Wallet />;
-      case "reports":
-        return <Reports />;
-      case "overview":
-      default:
-        return (
-          <>
-            <div className="welcome-section">
-              <h1>Welcome, Pasundo Admin</h1>
-              <p>Here&apos;s your overview for today</p>
-            </div>
-            <div className="dashboard-stats">
-              <div className="stat-card">
-                <h3>Total Users</h3>
-                <p>1,234</p>
+    try {
+      switch (activeSection) {
+        case "users":
+          return <Users />;
+        case "wallet":
+          return <Wallet />;
+        case "reports":
+          return <Reports />;
+        case "overview":
+        default:
+          return (
+            <>
+              <div className="welcome-section">
+                <h1>Welcome, Pasundo Admin</h1>
+                <p>Here&apos;s your overview for today</p>
               </div>
-              <div className="stat-card">
-                <h3>Active Wallets</h3>
-                <p>892</p>
+              <div className="dashboard-stats">
+                <div className="stat-card">
+                  <h3>Total Users</h3>
+                  <p>1,234</p>
+                </div>
+                <div className="stat-card">
+                  <h3>Active Wallets</h3>
+                  <p>892</p>
+                </div>
+                <div className="stat-card">
+                  <h3>Monthly Reports</h3>
+                  <p>56</p>
+                </div>
+                <div className="stat-card">
+                  <h3>Total Revenue</h3>
+                  <p>45,670</p>
+                </div>
               </div>
-              <div className="stat-card">
-                <h3>Monthly Reports</h3>
-                <p>56</p>
-              </div>
-              <div className="stat-card">
-                <h3>Total Revenue</h3>
-                <p>45,670</p>
-              </div>
-            </div>
-          </>
-        );
+            </>
+          );
+      }
+    } catch (error) {
+      console.error("Dashboard render error:", error);
+      return <div>Something went wrong. Please try again.</div>;
     }
   };
 
@@ -183,6 +188,7 @@ const DashboardClient = () => {
           <button className="sign-out-button" onClick={() => signOut()}>
             Sign Out
           </button>
+          <p className="admin-label">Administrator</p>
         </div>
       </nav>
 
