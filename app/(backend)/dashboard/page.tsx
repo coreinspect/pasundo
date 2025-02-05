@@ -1,5 +1,10 @@
 import Dashboard from "@/components/Dashboard/Dashboard";
+import { SessionProvider } from "next-auth/react";
 
 export default function page() {
-  return <Dashboard />;
+  return (
+    <SessionProvider>
+      <Dashboard />
+    </SessionProvider>
+  );
 }

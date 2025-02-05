@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
+import { allowedEmails } from "@/config/auth";
 import "./dashboard.css";
 import { FaUsers, FaWallet, FaChartBar, FaHome, FaBars } from "react-icons/fa";
 import Users from "./Users";
@@ -9,11 +12,14 @@ import Reports from "./Reports";
 import Image from "next/image";
 
 const DashboardClient = () => {
+  const { data: session, status } = useSession();
+  const userEmail = session?.user?.email;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+    // Prevent body scroll when menu is open
     document.body.style.overflow = !isMobileMenuOpen ? "hidden" : "auto";
   };
 
@@ -22,6 +28,34 @@ const DashboardClient = () => {
     setIsMobileMenuOpen(false);
     document.body.style.overflow = "auto";
   };
+
+  const isAuthorized = userEmail && allowedEmails.includes(userEmail);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (!session) {
+    return (
+      <div className="error-message">
+        <p>Please sign in to access the dashboard</p>
+        <Link href="/login" className="login-link">
+          Go to Login
+        </Link>
+      </div>
+    );
+  }
+
+  if (!isAuthorized) {
+    return (
+      <div className="error-message">
+        <p>Access Denied</p>
+        <button className="sign-out-button" onClick={() => signOut()}>
+          Sign Out
+        </button>
+      </div>
+    );
+  }
 
   const renderContent = () => {
     switch (activeSection) {
@@ -145,7 +179,10 @@ const DashboardClient = () => {
         </ul>
 
         <div className="nav-footer">
-          <p className="admin-label">Administrator</p>
+          <p className="user-email">{userEmail}</p>
+          <button className="sign-out-button" onClick={() => signOut()}>
+            Sign Out
+          </button>
         </div>
       </nav>
 
