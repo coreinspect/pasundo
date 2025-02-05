@@ -1,4 +1,4 @@
-import "./Users.css"; // Updated import
+import "./Users.css";  // Updated import
 
 const StatsCard = ({ title, value }: { title: string; value: number }) => {
   return (

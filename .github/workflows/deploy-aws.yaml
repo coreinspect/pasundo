@@ -1,0 +1,75 @@
+name: Deploy NextJS to AWS ECS
+
+on:
+  push:
+    branches: ["master", "deployment"]
+
+jobs:
+  deploy:
+    name: Build, Push to ECR, and Deploy to ECS
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-1 # Adjust for your AWS region
+
+      # Step 3:
+      - name: Write SSH private key to file
+        run: |
+          echo "${{ secrets.AWS_PASUNDO_EC2_SSH_KEY }}" > /tmp/aws_pasundo_ec2_ssh_key
+          chmod 600 /tmp/aws_pasundo_ec2_ssh_key
+
+      # Step 2: Deploy using SSH
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i /tmp/aws_pasundo_ec2_ssh_key ubuntu@${{ secrets.AWS_PASUNDO_EC2_PUBLIC_IP }} << EOF
+            # Ensure docker-compose is accessible
+            export PATH=$PATH:/usr/local/bin
+
+            # Navigate to the project directory
+            cd /home/ubuntu/projects/pasundo-frontend
+
+            # Set Github
+            if [ ! -d ".git" ]; then
+                echo "Initializing Git and setting credentials..."
+                git init
+                git config --global credential.helper "store --file=~/.git-credentials"
+                echo "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" > ~/.git-credentials
+            fi
+
+            if git remote get-url origin &>/dev/null; then
+              echo "Remote origin already exists. Updating URL..."
+              git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+            else
+                echo "Adding remote origin..."
+                git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+            fi
+
+            # Fetch and pull from the main branch
+            git checkout master
+            git fetch origin master
+            git pull origin master
+          EOF
+
+      - name: Install npm
+        run: |
+          curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+          npm install -g pm2
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run app in detached mode
+        run: |
+          pm2 start npm --name "next-app" -- start
