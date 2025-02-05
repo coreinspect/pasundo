@@ -2,7 +2,7 @@ name: Deploy NextJS to AWS ECS
 
 on:
   push:
-    branches: ["deployment"]
+    branches: ["master", "deployment"]
 
 jobs:
   deploy:
@@ -55,9 +55,9 @@ jobs:
             fi
 
             # Fetch and pull from the main branch
-            git checkout main
-            git fetch origin main
-            git pull origin main
+            git checkout master
+            git fetch origin master
+            git pull origin master
           EOF
 
       - name: Install npm
