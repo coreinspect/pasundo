@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";
-import { allowedEmails } from "@/config/auth";
 import "./dashboard.css";
 import { FaUsers, FaWallet, FaChartBar, FaHome, FaBars } from "react-icons/fa";
 import Users from "./Users";
@@ -12,14 +9,11 @@ import Reports from "./Reports";
 import Image from "next/image";
 
 const DashboardClient = () => {
-  const { data: session, status } = useSession();
-  const userEmail = session?.user?.email;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
-    // Prevent body scroll
     document.body.style.overflow = !isMobileMenuOpen ? "hidden" : "auto";
   };
 
@@ -28,34 +22,6 @@ const DashboardClient = () => {
     setIsMobileMenuOpen(false);
     document.body.style.overflow = "auto";
   };
-
-  const isAuthorized = userEmail && allowedEmails.includes(userEmail);
-
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  }
-
-  if (!session) {
-    return (
-      <div className="error-message">
-        <p>Please sign in to access the dashboard</p>
-        <Link href="/login" className="login-link">
-          Go to Login
-        </Link>
-      </div>
-    );
-  }
-
-  if (!isAuthorized) {
-    return (
-      <div className="error-message">
-        <p>Access Denied</p>
-        <button className="sign-out-button" onClick={() => signOut()}>
-          Sign Out
-        </button>
-      </div>
-    );
-  }
 
   const renderContent = () => {
     try {
@@ -71,7 +37,7 @@ const DashboardClient = () => {
           return (
             <>
               <div className="welcome-section">
-                <h1>Welcome, Pasundo Admin</h1>
+                <h1>Welcome to Pasundo Dashboard</h1>
                 <p>Here&apos;s your overview for today</p>
               </div>
               <div className="dashboard-stats">
@@ -130,7 +96,7 @@ const DashboardClient = () => {
             height={300}
             className="logo"
           />
-          <h2>Admin Panel</h2>
+          <h2>Dashboard</h2>
           <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
             <FaBars />
           </button>
@@ -182,14 +148,6 @@ const DashboardClient = () => {
             </a>
           </li>
         </ul>
-
-        <div className="nav-footer">
-          <p className="user-email">{userEmail}</p>
-          <button className="sign-out-button" onClick={() => signOut()}>
-            Sign Out
-          </button>
-          <p className="admin-label">Administrator</p>
-        </div>
       </nav>
 
       <main className="dashboard-main">{renderContent()}</main>
